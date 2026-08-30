@@ -2,11 +2,8 @@
 
 balance = 10000
 pin = 1234
-
 print("===== Welcome to ATM =====")
-
 entered_pin = int(input("Enter your PIN: "))
-
 if entered_pin == pin:
 
     while True:
@@ -51,7 +48,6 @@ if entered_pin == pin:
 
         else:
             print("Invalid choice! Please try again.")
-
 else:
     print("Incorrect PIN!")
     print("Transaction cancelled.")
