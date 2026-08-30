@@ -1,0 +1,100 @@
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+
+const int sensor1 = 2;
+const int sensor2 = 3;
+
+int count = 0;
+
+int sensor1State;
+int sensor2State;
+
+void setup() {
+  pinMode(sensor1, INPUT);
+  pinMode(sensor2, INPUT);
+
+  lcd.init();
+  lcd.backlight();
+
+  lcd.setCursor(0, 0);
+  lcd.print("Object Counter");
+  lcd.setCursor(0, 1);
+  lcd.print("Count: 0");
+
+  delay(2000);
+  lcd.clear();
+}
+
+void loop() {
+
+  sensor1State = digitalRead(sensor1);
+  sensor2State = digitalRead(sensor2);
+
+  // Sensor 1 detected first
+  if (sensor1State == LOW) {
+
+    delay(100);
+
+    if (digitalRead(sensor2) == LOW) {
+
+      count++;
+
+      lcd.clear();
+      lcd.setCursor(0, 0);
+      lcd.print("Direction:");
+      lcd.setCursor(0, 1);
+      lcd.print("S1 -> S2");
+
+      delay(500);
+
+      lcd.clear();
+      lcd.setCursor(0, 0);
+      lcd.print("Object Count:");
+      lcd.setCursor(0, 1);
+      lcd.print(count);
+
+      delay(500);
+
+      // Wait until sensors are clear
+      while (digitalRead(sensor1) == LOW ||
+             digitalRead(sensor2) == LOW) {
+      }
+    }
+  }
+
+  // Sensor 2 detected first
+  if (sensor2State == LOW) {
+
+    delay(100);
+
+    if (digitalRead(sensor1) == LOW) {
+
+      if (count > 0) {
+        count--;
+      }
+
+      lcd.clear();
+      lcd.setCursor(0, 0);
+      lcd.print("Direction:");
+      lcd.setCursor(0, 1);
+      lcd.print("S2 -> S1");
+
+      delay(500);
+
+      lcd.clear();
+      lcd.setCursor(0, 0);
+      lcd.print("Object Count:");
+      lcd.setCursor(0, 1);
+      lcd.print(count);
+
+      delay(500);
+
+      // Wait until sensors are clear
+      while (digitalRead(sensor1) == LOW ||
+             digitalRead(sensor2) == LOW) {
+      }
+    }
+  }
+}
