@@ -1,9 +1,13 @@
 # ATM Machine Using Python
 
 balance = 10000
+
 pin = 1234
+
 print("===== Welcome to ATM =====")
+
 entered_pin = int(input("Enter your PIN: "))
+
 if entered_pin == pin:
 
     while True:
